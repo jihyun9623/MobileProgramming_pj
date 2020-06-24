@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "1047094972511",
+    "firebase_url": "https://drivelikewalking-36a57.firebaseio.com",
+    "project_id": "drivelikewalking-36a57",
+    "storage_bucket": "drivelikewalking-36a57.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1047094972511:android:41aae7fb9f4b56e440cbea",
+        "android_client_info": {
+          "package_name": "com.hyeontti.drivelikewalking"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1047094972511-ge6vb7r5pppnkva5j5jugar54q71786h.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyChkJCx-0rTX_-Ipy3K2onimuCCNF5VEok"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1047094972511-ge6vb7r5pppnkva5j5jugar54q71786h.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/menu2"
+        android:title="@string/myloc"
+        app:showAsAction="never"/>
+    <item
+        android:id="@+id/menu3"
+        android:title="@string/nearparkinglot"
+        app:showAsAction="never"/>
+    <item
+        android:id="@+id/menu4"
+        android:title="@string/nearparkingdistup"
+        app:showAsAction="never"/>
+    <item
+        android:id="@+id/menu5"
+        android:title="@string/nearparkingdistdown"
+        app:showAsAction="never"/>
+    <item
+        android:id="@+id/menu1"
+        android:title="@string/logout"
+        app:showAsAction="never"/>
+    <item
+        android:id="@+id/me"
+        android:title="201614150 김지현"
+        app:showAsAction="always"/>
+</menu>

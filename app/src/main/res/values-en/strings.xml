@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="signup">Sign Up</string>
+    <string name="login">Sign In</string>
+    <string name="logout">Sign Out</string>
+    <string name="name">NAME</string>
+    <string name="id">ID</string>
+    <string name="pw">PASSWORD</string>
+    <string name="pwcheck">PASSWORD\nCHECK</string>
+    <string name="email">EMAIL</string>
+    <string name="signupcomplete">SIGN UP</string>
+    <string name="nologin">Use as a non-member</string>
+    <string name="myloc">to my location</string>
+    <string name="nearparkinglot">Find near Parking-lot</string>
+    <string name="nearparkingdistup">Find near Parking-lot(Increase range)</string>
+    <string name="nearparkingdistdown">Find near Parking-lot(Decrease range)</string>
+</resources>
