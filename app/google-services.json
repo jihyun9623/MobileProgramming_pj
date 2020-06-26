@@ -8,12 +8,20 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:1047094972511:android:41aae7fb9f4b56e440cbea",
+        "mobilesdk_app_id": "1:1047094972511:android:120b830d45f3149040cbea",
         "android_client_info": {
           "package_name": "com.hyeontti.drivelikewalking"
         }
       },
       "oauth_client": [
+        {
+          "client_id": "1047094972511-tmikpcsc0b1pit8ac8r83kp449i6uk2r.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.hyeontti.drivelikewalking",
+            "certificate_hash": "61bf0b6051d0df21ccf343176e95647808f660eb"
+          }
+        },
         {
           "client_id": "1047094972511-ge6vb7r5pppnkva5j5jugar54q71786h.apps.googleusercontent.com",
           "client_type": 3

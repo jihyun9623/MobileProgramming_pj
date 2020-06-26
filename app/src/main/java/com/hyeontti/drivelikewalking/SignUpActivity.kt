@@ -3,6 +3,7 @@ package com.hyeontti.drivelikewalking
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.view.Menu
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.database.*
@@ -12,6 +13,11 @@ import kotlinx.android.synthetic.main.activity_sign_up.*
 class SignUpActivity : AppCompatActivity() {
     lateinit var rdb: DatabaseReference
     var flag = 1
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.menu_studentid,menu)
+        return true
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -24,7 +30,6 @@ class SignUpActivity : AppCompatActivity() {
 
         signup_confirm.setOnClickListener {
             if(signup_id.text.toString() != "") {
-//                rdb.addListenerForSingleValueEvent(check)
                 rdb.addListenerForSingleValueEvent(object : ValueEventListener {//아이디 중복검사
                     override fun onCancelled(dbError: DatabaseError) {
                         Toast.makeText(applicationContext,"데이터베이스 오류입니다.",Toast.LENGTH_SHORT).show()
@@ -55,7 +60,8 @@ class SignUpActivity : AppCompatActivity() {
                         }
                     }
                 })
-            }
+            } else
+                Toast.makeText(applicationContext, "아이디를 입력해주세요.", Toast.LENGTH_SHORT).show()
         }
     }
 

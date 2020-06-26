@@ -10,8 +10,39 @@
     <string name="email">EMAIL</string>
     <string name="signupcomplete">SIGN UP</string>
     <string name="nologin">Use as a non-member</string>
-    <string name="myloc">to my location</string>
+    <string name="tomyloc">to my location</string>
     <string name="nearparkinglot">Find near Parking-lot</string>
     <string name="nearparkingdistup">Find near Parking-lot(Increase range)</string>
     <string name="nearparkingdistdown">Find near Parking-lot(Decrease range)</string>
+    <string name="myloc">My Location</string>
+
+    <string name="parking_detail">Parking Lot Details</string>
+    <string name="check">OK</string>
+    <string name="call">CALL</string>
+    <string name="write_review">REVIEW</string>
+    <string name="parking_name">Name of Parking Lot : </string>
+    <string name="parking_address">Address : </string>
+    <string name="parking_type">Type of Parking Lot : </string>
+    <string name="parking_type2">Manage Type : </string>
+    <string name="parking_call">Tel : </string>
+    <string name="parking_space_all">Capability : </string>
+    <string name="parked_car">Amount of Left Space : </string>
+    <string name="parked_car_time">Last Update : </string>
+    <string name="parking_free_yn">Free of charge : </string>
+    <string name="parking_night">Free open at night : </string>
+    <string name="parking_open_day">Weekday open : </string>
+    <string name="parking_close_day">Weekday close : </string>
+    <string name="parking_open_weekend">Weekend open : </string>
+    <string name="parking_close_weekend">Weekend close : </string>
+    <string name="parking_basic_pay">Basic parking fee : </string>
+    <string name="parking_basic_time">Basic parking time (minutes) : </string>
+    <string name="parking_additional_pay">Additional unit charge : </string>
+    <string name="parking_additional_time">Additional unit time (minutes) : </string>
+
+    <string name="review"> - Write Review</string>
+    <string name="star">Star : </string>
+    <string name="contents">Contents : </string>
+    <string name="done">Done</string>
+    <string name="sort">Low star rating</string>
+    <string name="trans">Translate</string>
 </resources>

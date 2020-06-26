@@ -3,6 +3,7 @@ package com.hyeontti.drivelikewalking
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.view.Menu
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.gms.auth.api.signin.GoogleSignIn
@@ -22,6 +23,11 @@ class MainActivity : AppCompatActivity() {
     val RC_SIGN_IN = 99
     lateinit var rdb:DatabaseReference
     var flag = 1
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.menu_studentid,menu)
+        return true
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -46,7 +52,9 @@ class MainActivity : AppCompatActivity() {
             signIn()
         }
         nologin.setOnClickListener {
+            var userArray = arrayListOf("비회원", "", "", "")
             val i = Intent(applicationContext,MapActivity::class.java)
+            i.putExtra("nowUser",userArray)
             startActivity(i)
         }
 
@@ -81,7 +89,6 @@ class MainActivity : AppCompatActivity() {
                             login_pw.text = null
                             Toast.makeText(applicationContext,"로그인 성공", Toast.LENGTH_SHORT).show()
                             startActivity(i)
-//                            startActivityForResult(i,100)
                             break
                         }
                         else {
@@ -100,8 +107,10 @@ class MainActivity : AppCompatActivity() {
     override fun onStart() {
         super.onStart()
         val account = GoogleSignIn.getLastSignedInAccount(this)
-//        if(account!==null)
-//            toMainActivity(fdbAuth.currentUser)
+        if(account!=null) {
+            Log.d("정보 있냐",account.toString())
+            toMainActivity(fdbAuth.currentUser)
+        }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -134,23 +143,15 @@ class MainActivity : AppCompatActivity() {
 
     fun toMainActivity(user:FirebaseUser?){
         if(user !=null){
+            Log.d("있냐",user.toString())
             startActivity(Intent(this,MapActivity::class.java))
             finish()
         }
+        Log.d("있냐",user.toString())
     }
 
     fun signIn(){
         val signInIntent = googleSignInClient.signInIntent
         startActivityForResult(signInIntent, RC_SIGN_IN)
     }
-//    private fun signOut(){
-//        fdbAuth.signOut()
-//        googleSignInClient.signOut().addOnCompleteListener(this) {
-//        }
-//    }
-//    private fun revokeAccess(){
-//        fdbAuth.signOut()
-//        googleSignInClient.revokeAccess().addOnCanceledListener(this) {
-//        }
-//    }
 }
