@@ -12,9 +12,10 @@
     <string name="nologin">비회원으로 이용하기</string>
     <string name="tomyloc">내 위치로 이동</string>
     <string name="nearparkinglot">내 주변 주차장 찾기</string>
+    <string name="neardest">목적지 주변 주차장 찾기</string>
     <string name="nearparkingdistup">내 주변 주차장 검색 범위 늘리기</string>
     <string name="nearparkingdistdown">내 주변 주차장 검색 범위 줄이기</string>
-    <string name="myloc">내 위치</string>
+    <string name="myloc">여기</string>
 
     <string name="parking_detail">주차장 상세정보</string>
     <string name="check">확인</string>
@@ -38,11 +39,12 @@
     <string name="parking_basic_time">기본주차시간(분단위) : </string>
     <string name="parking_additional_pay">추가단위요금 : </string>
     <string name="parking_additional_time">추가단위시간(분단위) : </string>
+    <string name="no_connect">미연계중</string>
 
     <string name="review"> - 리뷰 작성하기</string>
     <string name="star">별점 : </string>
     <string name="contents">내용 : </string>
     <string name="done">입력완료</string>
     <string name="sort">별점 높은 순</string>
-    <string name="trans">번역하기</string>
+    <string name="trans">리뷰 번역</string>
 </resources>

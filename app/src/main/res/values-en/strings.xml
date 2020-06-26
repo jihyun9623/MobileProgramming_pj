@@ -12,9 +12,10 @@
     <string name="nologin">Use as a non-member</string>
     <string name="tomyloc">to my location</string>
     <string name="nearparkinglot">Find near Parking-lot</string>
+    <string name="neardest">Find Parking-lot near destination</string>
     <string name="nearparkingdistup">Find near Parking-lot(Increase range)</string>
     <string name="nearparkingdistdown">Find near Parking-lot(Decrease range)</string>
-    <string name="myloc">My Location</string>
+    <string name="myloc">Here</string>
 
     <string name="parking_detail">Parking Lot Details</string>
     <string name="check">OK</string>
@@ -38,11 +39,12 @@
     <string name="parking_basic_time">Basic parking time (minutes) : </string>
     <string name="parking_additional_pay">Additional unit charge : </string>
     <string name="parking_additional_time">Additional unit time (minutes) : </string>
+    <string name="no_connect">Not connected</string>
 
     <string name="review"> - Write Review</string>
     <string name="star">Star : </string>
     <string name="contents">Contents : </string>
     <string name="done">Done</string>
     <string name="sort">Low star rating</string>
-    <string name="trans">Translate</string>
+    <string name="trans">Review Translated</string>
 </resources>

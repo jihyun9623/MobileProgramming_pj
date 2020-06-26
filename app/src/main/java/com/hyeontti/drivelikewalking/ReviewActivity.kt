@@ -1,14 +1,24 @@
 package com.hyeontti.drivelikewalking
 
 import android.os.Bundle
+import android.os.StrictMode
 import android.util.Log
 import android.view.Menu
+import android.view.View
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.firebase.ui.database.FirebaseRecyclerOptions
+import com.google.auth.oauth2.GoogleCredentials
+import com.google.cloud.translate.Translate
+import com.google.cloud.translate.TranslateOptions
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import kotlinx.android.synthetic.main.activity_review.*
+import java.io.IOException
+import java.util.*
+import kotlin.collections.ArrayList
+
 
 class ReviewActivity : AppCompatActivity() {
     lateinit var layoutManager: LinearLayoutManager
@@ -17,6 +27,8 @@ class ReviewActivity : AppCompatActivity() {
     var findQuery = false
 
     var Info = ArrayList<String>()
+
+    private var translate: Translate? = null
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.menu_studentid,menu)
@@ -68,6 +80,7 @@ class ReviewActivity : AppCompatActivity() {
                 .setQuery(query,Reviews::class.java).build()
             adapter = MyReviewAdapter(option)
             recyclerView.adapter = adapter
+            translate()
             adapter.startListening()
         }
     }
@@ -84,6 +97,7 @@ class ReviewActivity : AppCompatActivity() {
             .setQuery(query,Reviews::class.java).build()
         adapter = MyReviewAdapter(option)
         recyclerView.adapter = adapter
+        translate()
         adapter.startListening()
     }
 
@@ -97,7 +111,41 @@ class ReviewActivity : AppCompatActivity() {
         val option = FirebaseRecyclerOptions.Builder<Reviews>()
             .setQuery(query,Reviews::class.java).build()
         adapter = MyReviewAdapter(option)
+        translate()
         recyclerView.adapter = adapter
+    }
+
+    fun translate(){
+        adapter.itemClickListner = object :MyReviewAdapter.OnItemClickListner{
+            override fun OnItemClick(view: View, position: Int) {
+                getTranslateService()
+                if(Locale.getDefault().language=="ko"){
+                    val originalText = adapter.getItem(position).contents
+                    val translation = translate!!.translate(originalText, Translate.TranslateOption.targetLanguage("ko"), Translate.TranslateOption.model("base"))
+                    Toast.makeText(applicationContext,translation.translatedText,Toast.LENGTH_SHORT).show()
+                }else if(Locale.getDefault().language=="en"){
+                    val originalText = adapter.getItem(position).contents
+                    val translation = translate!!.translate(originalText, Translate.TranslateOption.targetLanguage("en"), Translate.TranslateOption.model("base"))
+                    Toast.makeText(applicationContext,translation.translatedText,Toast.LENGTH_SHORT).show()
+                }
+
+            }
+
+        }
+    }
+
+    private fun getTranslateService() {
+        val policy = StrictMode.ThreadPolicy.Builder().permitAll().build()
+        StrictMode.setThreadPolicy(policy)
+        try {
+            resources.openRawResource(R.raw.googletranscredential).use { `is` ->
+                val myCredentials = GoogleCredentials.fromStream(`is`)
+                val translateOptions = TranslateOptions.newBuilder().setCredentials(myCredentials).build()
+                translate = translateOptions.service
+            }
+        } catch (ioe: IOException) {
+            ioe.printStackTrace()
+        }
     }
 
     override fun onStart() {

@@ -11,7 +11,7 @@ import com.firebase.ui.database.FirebaseRecyclerOptions
 class MyReviewAdapter(options: FirebaseRecyclerOptions<Reviews>) :
     FirebaseRecyclerAdapter<Reviews, MyReviewAdapter.ViewHolder>(options) {
 
-        var itemClickListner:OnItemClickListner ?= null
+    var itemClickListner:OnItemClickListner ?= null
 
         //viewholder에 관한 클래스
         inner class ViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
@@ -30,7 +30,7 @@ class MyReviewAdapter(options: FirebaseRecyclerOptions<Reviews>) :
         }
 
         interface OnItemClickListner{
-            fun OnItemClick(view: View, position: Int)
+            fun OnItemClick(view:View, position: Int)
         }
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -44,4 +44,6 @@ class MyReviewAdapter(options: FirebaseRecyclerOptions<Reviews>) :
             holder.star.text = model.star.toString()
             holder.content.text = model.contents
         }
+
+
 }

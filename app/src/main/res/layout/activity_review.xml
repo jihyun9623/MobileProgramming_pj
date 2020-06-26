@@ -87,12 +87,6 @@
     android:layout_marginTop="10dp"
     android:layout_marginBottom="20dp">
     <Button
-        android:id="@+id/translate"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:text="@string/trans" />
-    <Button
         android:id="@+id/sort_star"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

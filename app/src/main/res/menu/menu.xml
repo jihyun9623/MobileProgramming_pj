@@ -11,6 +11,10 @@
         android:title="@string/nearparkinglot"
         app:showAsAction="never"/>
     <item
+        android:id="@+id/menu6"
+        android:title="@string/neardest"
+        app:showAsAction="never"/>
+    <item
         android:id="@+id/menu4"
         android:title="@string/nearparkingdistup"
         app:showAsAction="never"/>

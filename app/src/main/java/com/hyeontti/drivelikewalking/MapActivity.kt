@@ -44,6 +44,7 @@ class MapActivity : AppCompatActivity(), GoogleMap.OnInfoWindowClickListener {
 
     lateinit var googleMap: GoogleMap
     var loc = LatLng(37.555198, 126.970806)
+    var dest:LatLng ?=null
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.menu,menu)
@@ -58,78 +59,36 @@ class MapActivity : AppCompatActivity(), GoogleMap.OnInfoWindowClickListener {
                 finish()
             }
             R.id.menu2 -> {//내위치로 이동
+                dest =null
                 getuserlocation()
                 startLocationUpdates()
 //                googleMap.clear()
             }
+            R.id.menu6 -> {//목적지 주변 주차장 찾기
+                if(dest !=null)
+                    findNearParkinLot(dest!!)
+                else
+                    Toast.makeText(this,"지도에서 목적지를 선택해주세요.",Toast.LENGTH_SHORT).show()
+            }
             R.id.menu4->{
                 if(searchmeter>10000)
-                    Toast.makeText(applicationContext,"현재 검색 범위 : "+searchmeter+"범위는 최대 10KM까지만 검색 가능합니다.",Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this,"현재 검색 범위 : "+searchmeter+"범위는 최대 10KM까지만 검색 가능합니다.",Toast.LENGTH_SHORT).show()
                 else{
                     searchmeter+=500.0
-                    Toast.makeText(applicationContext,"현재 검색 범위 : "+searchmeter.toInt()+"m",Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this,"현재 검색 범위 : "+searchmeter.toInt()+"m",Toast.LENGTH_SHORT).show()
                 }
             }
             R.id.menu5->{
                 if(searchmeter<1000)
-                    Toast.makeText(applicationContext,"현재 검색 범위 : "+searchmeter+"범위는 최소 1KM까지만 검색 가능합니다.",Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this,"현재 검색 범위 : "+searchmeter+"범위는 최소 1KM까지만 검색 가능합니다.",Toast.LENGTH_SHORT).show()
                 else{
                     searchmeter-=500.0
-                    Toast.makeText(applicationContext,"현재 검색 범위 : "+searchmeter.toInt()+"m",Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this,"현재 검색 범위 : "+searchmeter.toInt()+"m",Toast.LENGTH_SHORT).show()
                 }
             }
             R.id.menu3 -> {
-                rdb = FirebaseDatabase.getInstance().getReference("DLW/Parkinglot/DATA")
-                rdb.addListenerForSingleValueEvent(object : ValueEventListener {
-                    override fun onCancelled(dbError: DatabaseError) {
-                        Toast.makeText(applicationContext,"데이터베이스 오류입니다.", Toast.LENGTH_SHORT).show()
-                    }
-                    override fun onDataChange(dataSnapshot: DataSnapshot) {
-                        distArray.clear()
-                        googleMap.clear()
-                        val options = MarkerOptions()
-                        options.position(loc)
-                        options.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_VIOLET))
-                        googleMap.addMarker(options)
-                        var parking_name_arr=ArrayList<String>()
-                        var addr_arr=ArrayList<String>()
-                        for (postSnapshot in dataSnapshot.children) {
-                            var parking_name = postSnapshot.getValue(DATA::class.java)?.parking_name
-                            var addr = postSnapshot.getValue(DATA::class.java)?.addr
-                            var lat = postSnapshot.getValue(DATA::class.java)?.lat
-                            var lng = postSnapshot.getValue(DATA::class.java)?.lng
-//                            Log.d("sn?",parking_name.toString())
-                            val locationA = Location("point A")
-                            locationA.latitude = loc.latitude
-                            locationA.longitude = loc.longitude
-                            val locationB = Location("point B")
-                            locationB.latitude = lat!!
-                            locationB.longitude = lng!!
-                            var onelatlng = LatLng(lat!!, lng!!)
-                            var distance = locationA.distanceTo(locationB).toDouble()
-                            Log.d("distance",distance.toString())
-                            if(distance<=searchmeter){//반경 2000미터 안이면
-                                distArray.add(onelatlng)
-                                parking_name_arr.add(parking_name!!)
-                                addr_arr.add(addr!!)
-                            }
-                        }
-                        Log.d("sndistancesize",(distArray.size-1).toString())
-                        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(loc,14.0f))
-                        options.title(resources.getString(R.string.myloc))
-                        googleMap.addMarker(options).showInfoWindow()
-                        for(i in 0 until distArray.size){
-                            val options = MarkerOptions()
-                            options.position(distArray[i])
-                            options.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE))
-                            options.title(parking_name_arr[i])
-                            options.snippet(addr_arr[i])
-                            googleMap.addMarker(options)
-                        }
-
-                    }
-
-                })
+                dest =null
+                findNearParkinLot(loc)
             }
         }
         return super.onOptionsItemSelected(item)
@@ -141,6 +100,71 @@ class MapActivity : AppCompatActivity(), GoogleMap.OnInfoWindowClickListener {
         mAuth = FirebaseAuth.getInstance()
 
         initLocation()
+    }
+
+    fun destMapListner(){
+        googleMap.setOnMapClickListener {
+            googleMap.clear()//마커정보 모두 지워줌
+            val options = MarkerOptions()
+            options.position(it)
+            dest = it
+            options.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE))
+            googleMap.addMarker(options)
+        }
+    }
+
+    fun findNearParkinLot(destloc:LatLng){
+        rdb = FirebaseDatabase.getInstance().getReference("DLW/Parkinglot/DATA")
+        rdb.addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onCancelled(dbError: DatabaseError) {
+                Toast.makeText(applicationContext,"데이터베이스 오류입니다.", Toast.LENGTH_SHORT).show()
+            }
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                distArray.clear()
+                googleMap.clear()
+                val options = MarkerOptions()
+                options.position(destloc)
+                options.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_VIOLET))
+                googleMap.addMarker(options)
+                var parking_name_arr=ArrayList<String>()
+                var addr_arr=ArrayList<String>()
+                for (postSnapshot in dataSnapshot.children) {
+                    var parking_name = postSnapshot.getValue(DATA::class.java)?.parking_name
+                    var addr = postSnapshot.getValue(DATA::class.java)?.addr
+                    var lat = postSnapshot.getValue(DATA::class.java)?.lat
+                    var lng = postSnapshot.getValue(DATA::class.java)?.lng
+//                            Log.d("sn?",parking_name.toString())
+                    val locationA = Location("point A")
+                    locationA.latitude = destloc.latitude
+                    locationA.longitude = destloc.longitude
+                    val locationB = Location("point B")
+                    locationB.latitude = lat!!
+                    locationB.longitude = lng!!
+                    var onelatlng = LatLng(lat, lng)
+                    var distance = locationA.distanceTo(locationB).toDouble()
+                    Log.d("distance",distance.toString())
+                    if(distance<=searchmeter){//반경 2000미터 안이면
+                        distArray.add(onelatlng)
+                        parking_name_arr.add(parking_name!!)
+                        addr_arr.add(addr!!)
+                    }
+                }
+                Log.d("sndistancesize",(distArray.size-1).toString())
+                googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(destloc,14.0f))
+                options.title(resources.getString(R.string.myloc))
+                googleMap.addMarker(options).showInfoWindow()
+                for(i in 0 until distArray.size){
+                    val options = MarkerOptions()
+                    options.position(distArray[i])
+                    options.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE))
+                    options.title(parking_name_arr[i])
+                    options.snippet(addr_arr[i])
+                    googleMap.addMarker(options)
+                }
+
+            }
+
+        })
     }
 
     override fun onInfoWindowClick(p0: Marker?) {
@@ -177,25 +201,30 @@ class MapActivity : AppCompatActivity(), GoogleMap.OnInfoWindowClickListener {
             }
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 for (postSnapshot in dataSnapshot.children) {
-                    if(postSnapshot.getValue(DATA::class.java)?.parking_name==p0!!.title){
-                        parking_name.text = postSnapshot.getValue(DATA::class.java)?.parking_name
-                        parking_address.text = postSnapshot.getValue(DATA::class.java)?.addr
-                        parking_type.text = postSnapshot.getValue(DATA::class.java)?.parking_type_nm
-                        parking_type2.text = postSnapshot.getValue(DATA::class.java)?.operation_rule_nm
-                        parking_call.text = postSnapshot.getValue(DATA::class.java)?.tel
-                        parking_space_all.text = postSnapshot.getValue(DATA::class.java)?.capacity.toString()
-                        parked_car.text = postSnapshot.getValue(DATA::class.java)?.cur_parking
-                        parked_car_time.text = postSnapshot.getValue(DATA::class.java)?.cur_parking_time
-                        parking_free_yn.text = postSnapshot.getValue(DATA::class.java)?.pay_nm
-                        parking_night.text = postSnapshot.getValue(DATA::class.java)?.night_free_open_nm
-                        parking_open_day.text = postSnapshot.getValue(DATA::class.java)?.weekday_begin_time
-                        parking_close_day.text = postSnapshot.getValue(DATA::class.java)?.weekday_end_time
-                        parking_open_weekend.text = postSnapshot.getValue(DATA::class.java)?.weekend_begin_time
-                        parking_close_weekend.text = postSnapshot.getValue(DATA::class.java)?.weekend_end_time
-                        parking_basic_pay.text = postSnapshot.getValue(DATA::class.java)?.rates.toString()
-                        parking_basic_time.text = postSnapshot.getValue(DATA::class.java)?.time_rate.toString()
-                        parking_additional_pay.text = postSnapshot.getValue(DATA::class.java)?.add_rates.toString()
-                        parking_additional_time.text = postSnapshot.getValue(DATA::class.java)?.add_time_rate.toString()
+                    var data = postSnapshot.getValue(DATA::class.java)
+                    if(data?.parking_name==p0!!.title){
+                        parking_name.text = data?.parking_name
+                        parking_address.text = data?.addr
+                        parking_type.text = data?.parking_type_nm
+                        parking_type2.text = data?.operation_rule_nm
+                        parking_call.text = data?.tel
+                        parking_space_all.text = data?.capacity.toString()
+                        if(data?.cur_parking==""){
+                            parked_car.text = "미연계중"
+                                //postSnapshot.getValue(DATA::class.java)?.cur_parking
+                            parked_car_time.text = "미연계중"
+                                //postSnapshot.getValue(DATA::class.java)?.cur_parking_time
+                        }
+                        parking_free_yn.text = data?.pay_nm
+                        parking_night.text = data?.night_free_open_nm
+                        parking_open_day.text = data?.weekday_begin_time
+                        parking_close_day.text = data?.weekday_end_time
+                        parking_open_weekend.text = data?.weekend_begin_time
+                        parking_close_weekend.text = data?.weekend_end_time
+                        parking_basic_pay.text = data?.rates.toString()
+                        parking_basic_time.text = data?.time_rate.toString()
+                        parking_additional_pay.text = data?.add_rates.toString()
+                        parking_additional_time.text = data?.add_time_rate.toString()
                         Log.d("parkinglot",parking_name.text.toString())
                         break
                     }
@@ -342,6 +371,8 @@ class MapActivity : AppCompatActivity(), GoogleMap.OnInfoWindowClickListener {
 //            options.snippet("서울역")
             googleMap.addMarker(options)
             googleMap.setOnInfoWindowClickListener(this)
+
+            destMapListner()
         }
     }
 
